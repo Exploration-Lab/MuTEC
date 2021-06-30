@@ -3,8 +3,8 @@
 ## Top-level structure
     .
     ├── end2end                   # Task1: Cause Span Extraction End2End Architecture
-    ├── task2                     # Causal Emotion Entailment End2End Architecture
-    ├── two-step                  # Task2: Cause Span Extraction Two Step Architecture
+    ├── task2                     # Task2: Causal Emotion Entailment End2End Architecture
+    ├── two-step                  # Task1: Cause Span Extraction Two Step Architecture
     ├── LICENSE
     └── README.md
 > Inside every directory you can find a `README` that explains the structure of that directory. 
