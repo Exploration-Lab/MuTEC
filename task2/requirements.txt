@@ -1,0 +1,6 @@
+transformers
+tokenizers
+tqdm
+ray==0.8.7
+ray[tune]
+wandb

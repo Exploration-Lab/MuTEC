@@ -1,0 +1,5 @@
+__pycache__/
+wandb/
+.ipynb_checkpoints/
+*.png
+install.sh
