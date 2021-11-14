@@ -37,7 +37,7 @@ def run(device):
     df_valid.emotion = df_valid.emotion.apply(lambda x: config.emotion_mapping[x])
     df_test.emotion = df_test.emotion.apply(lambda x: config. emotion_mapping[x])
 
-    em_weights = [0]*7
+    em_weights = [0]*6
     em = df_train['emotion'].value_counts().reset_index().values.tolist()  
   
     for idx, (e, c) in enumerate(em):
@@ -45,14 +45,23 @@ def run(device):
     neg_weight = get_neg_weights(df_train)
 
     print("Evaluate model on test set")
-    best_model_path = 'models_beam/'
+    best_model_path = config.PATH
     for i, filename in enumerate(os.listdir(best_model_path)):
       if filename.endswith(".pth"): 
         print(f"{filename}\t File:{i}")    
         model = RecModel(device=device, best_model=os.path.join(best_model_path, filename), em_weights=em_weights, neg_weights=neg_weight)
+
+        print("***************** DEV SET ************************")
+
+        results, text = model.eval_fn(df_valid)
+        r, _ = evaluate_results(text)
+        print(r)
+        
+        print("***************** TEST SET ************************")
         results, text = model.eval_fn(df_test)
         r, _ = evaluate_results(text)
         print(r)
+        
 
 if __name__ == '__main__':
     global args

@@ -506,7 +506,8 @@ class RecModel(nn.Module):
         self.model = self.model.to(self.device)
         
         all_predictions, eval_loss_avg, acc, f1 = self.eval(test_data_loader, examples, features, self.model, self.device)
-        df_valid = pd.read_csv(config.TEST_DATASET)
+        # df_valid = pd.read_csv(config.TEST_DATASET)
+        df_valid = df_test
         truth = df_valid[['id', 'cause_span']]
 
         result, texts = self.calculate_results(truth, all_predictions)

@@ -21,6 +21,7 @@ m = {
   'sad': 'sadness',
   'surprised': 'surprise',
   'frustrated': 'anger',
+  'excited': 'happiness'
 }
 
 def preprocess(df):

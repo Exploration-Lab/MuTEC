@@ -77,7 +77,7 @@ def preprocess(df):
 
 def get_weights(df):
   label_weights = [0]*2
-  em_weights = [0]*7
+  em_weights = [0]*6
   em = df['emotion'].value_counts().reset_index().values.tolist()
   lm = df['labels'].value_counts().reset_index().values.tolist()
   

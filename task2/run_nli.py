@@ -22,13 +22,13 @@ def run(device, model_name, model_id):
     # df_test = df_test[:100]
     
     out_weights, em_weights = get_weights(df_train)
-
-    # print(out_weights, em_weights)
+    
+    print(out_weights, em_weights)
     print(df_train['emotion'].value_counts())
     print(df_valid['emotion'].value_counts())
     print(df_test['emotion'].value_counts())
     
-    path = 'best_model/'
+    path = config.PATH
     model = EntailModel(path=path, device=device, model_name=model_name, model_id=model_id, out_weights=out_weights, em_weights=em_weights)
     model.train_model(df_train, df_valid=df_valid)
 

@@ -3,3 +3,8 @@ wandb/
 .ipynb_checkpoints/
 *.png
 install.sh
+best_model/
+best_model_wocontext/
+data/
+outputs/
+*.txt

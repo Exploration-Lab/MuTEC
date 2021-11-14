@@ -17,8 +17,8 @@ import numpy as np
 import wandb
 
 class ClsModel(nn.Module):
-    def __init__(self, model_name, model_id, one_layer=True, fc_dim=512, n_outputs=2, \
-    n_em_outputs=7, dropout_prob=0.1):
+    def __init__(self, model_name, model_id, one_layer=True, fc_dim=512, n_outputs=2,
+    n_em_outputs=6, dropout_prob=0.1):
         super(ClsModel, self).__init__()
         self.model_name = model_name
         self.config = AutoConfig.from_pretrained(model_id, output_hidden_states=True)
@@ -125,6 +125,7 @@ class EntailModel:
         weights = 1.0 / weights
         weights = weights / weights.sum()
         class_weights = torch.FloatTensor(weights).to(self.device)
+        # print("out_weights:", class_weights)
         return nn.CrossEntropyLoss(weight=class_weights)(outputs, targets.long())
       
     def em_loss_fn(self, outputs, targets):
@@ -133,6 +134,7 @@ class EntailModel:
         weights = 1.0 / weights
         weights = weights / weights.sum()
         class_weights = torch.FloatTensor(weights).to(self.device)
+        # print("em_weights: ", class_weights)
         return nn.CrossEntropyLoss(weight=class_weights)(outputs, targets.long())
       
     def train_model(self, df_train, df_valid=None):
@@ -268,8 +270,7 @@ class EntailModel:
                 )
 
             ut_preds, final_preds = outputs
-            loss = config.BETA * self.em_loss_fn(ut_preds, em_targets) \
-            + self.out_loss_fn(final_preds, targets)
+            loss = config.BETA * self.em_loss_fn(ut_preds, em_targets) + self.out_loss_fn(final_preds, targets)
             # loss = self.out_loss_fn(final_preds, targets)
 
             loss.backward()

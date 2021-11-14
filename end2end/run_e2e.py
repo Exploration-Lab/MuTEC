@@ -12,9 +12,7 @@ import torch.nn as nn
 from tqdm import tqdm
 import torch
 from transformers import AdamW, get_linear_schedule_with_warmup
-from transformers import (
-    BertConfig
-)
+
 import wandb
 from utils_e2e import *
 
@@ -36,7 +34,7 @@ def run(device):
     df_test.emotion = df_test.emotion.apply(lambda x: config. emotion_mapping[x])
 
     ###
-    em_weights = [0]*7
+    em_weights = [0]*6
     em = df_train['emotion'].value_counts().reset_index().values.tolist()  
   
     for idx, (e, c) in enumerate(em):
@@ -45,7 +43,7 @@ def run(device):
 
     neg_weight = get_neg_weights(df_train)
 
-    best_model_path = 'models_beam/'
+    best_model_path = config.PATH
 
     model = RecModel(device=device, best_model=best_model_path, em_weights=em_weights, neg_weights=neg_weight)
     model.train_fn(df_train, df_valid)
@@ -73,6 +71,7 @@ if __name__ == '__main__':
     print(args)
 
     device = "cuda:{}".format(str(args.cuda))
+    print(device)
     seed_everything(seed=config.SEED)
     sweep_config = config.sweep_config
 

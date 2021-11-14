@@ -28,12 +28,32 @@ def run(device, model_name, model_id):
     print(df_valid['emotion'].value_counts())
     print(df_test['emotion'].value_counts())
     
-    path = 'best_model/'
+    path = config.PATH
 
     for i, filename in enumerate(os.listdir(path)):
       if filename.endswith(".pth"): 
         print(f"{filename}\tFile number:{i}")
         model = EntailModel(path=os.path.join(path, filename), device=device, model_name=model_name, model_id=model_id, out_weights=out_weights, em_weights=em_weights)
+
+        print("***************** DEV SET ************************")
+        ################# Dev Set #######################
+        outputs, targets, em_outputs, em_targets = model.eval_model(df_valid)
+        
+        print("Emotion Accuracy: ", accuracy_score(em_targets, em_outputs))
+        if 'iemocap' in config.TEST_DATASET:
+          r = str(classification_report(em_targets, em_outputs, digits=4, zero_division=0, target_names=['happiness', 'anger', 'sadness', 'excited'],  ))
+        else:
+          r = str(classification_report(em_targets, em_outputs, digits=4, zero_division=0))
+        print(confusion_matrix(em_targets, em_outputs))
+        print (r)
+
+        print(str(classification_report(targets, outputs, digits=4, zero_division=0)))
+
+        calculate_pos_per(outputs, targets, em_outputs, em_targets)
+
+
+        print("************* TEST SET *****************")
+        ###############  Test set   #####################
         outputs, targets, em_outputs, em_targets = model.eval_model(df_test)
         
         print("Emotion Accuracy: ", accuracy_score(em_targets, em_outputs))
