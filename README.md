@@ -5,7 +5,6 @@
     ├── MuTEC_CSE                 # Task1: Cause Span Extraction End2End Architecture
     ├── MuTEC_CSE                 # Task2: Causal Emotion Entailment End2End Architecture
     ├── two-step                  # Task1: Cause Span Extraction Two Step Architecture
-    ├── LICENSE
     └── README.md
 > Inside every directory you can find a `README` that explains the structure of that directory. 
 
