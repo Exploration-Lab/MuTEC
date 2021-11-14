@@ -1,17 +1,12 @@
-# Emotion cause in conversations
+## MuTEC: An end to end Multi-Task learning framework for extractingEmotions and emotion Cause in conversations
 
-## Top-level structure
+### Top-level structure
     .
-    ├── end2end                   # Task1: Cause Span Extraction End2End Architecture
-    ├── task2                     # Task2: Causal Emotion Entailment End2End Architecture
+    ├── MuTEC_CSE                 # Task1: Cause Span Extraction End2End Architecture
+    ├── MuTEC_CSE                 # Task2: Causal Emotion Entailment End2End Architecture
     ├── two-step                  # Task1: Cause Span Extraction Two Step Architecture
     ├── LICENSE
     └── README.md
 > Inside every directory you can find a `README` that explains the structure of that directory. 
 
-## License
-[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)<br>
-Follows [CC-BY-NC](LICENSE) license.
-
-## Contact
-[bashwani@cse.iitk.ac.in](mailto:bashwani@cse.iitk.ac.in)
+Dataset is taken from RECCON paper: https://github.com/declare-lab/RECCON

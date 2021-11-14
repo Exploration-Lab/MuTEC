@@ -76,12 +76,7 @@ class EmotionPredictor:
                 "emotion_idx": batch[7],
             }
 
-        # if config.model_type in ["xlm", "roberta", "distilbert", "camembert", "electra", "xlmroberta", "bart"]:
-        #     del inputs["token_type_ids"]
-
-        # if self.args.model_type in ["xlnet", "xlm"]:
-        #     inputs.update({"cls_index": batch[5], "p_mask": batch[6]})
-
+        
         return inputs
 
     # weighted cross entropy
@@ -162,11 +157,7 @@ class EmotionPredictor:
         fin_outputs = np.argmax(np.array(fin_outputs), axis=1)
         accuracy = metrics.accuracy_score(fin_targets, fin_outputs)
         f1 = metrics.f1_score(fin_targets, fin_outputs, average='macro')
-        # print("Output")
-        # print(fin_outputs)
-        # print("#"*50)
-        # print(fin_targets)
-
+        
         print(f"Accuracy score= {accuracy}\nF1 Score= {f1}")
         return fin_outputs, accuracy, f1, eval_loss.avg
 
@@ -213,13 +204,11 @@ class EmotionPredictor:
 
             if f1 > best_f1:
                 save_path = 'emotion_epoch_{}.pth'.format(epoch)
-                # save_path = 'emotion_epoch.pt'
                 torch.save(self.model.state_dict(), os.path.join(self.path, save_path))
                 best_accuracy = accuracy
                 best_valid_predictions = outputs
                 best_f1 = f1
 
-        # plot_loss(train_loss_list, eval_loss_list, "EP")
         return best_valid_predictions
 
     def evaluate(self, device, test_data_loader):

@@ -33,8 +33,6 @@ from question_answering_utils import (
 
 RawResult = collections.namedtuple("RawResult", ["unique_id", "start_logits", "end_logits"])
 
-# seed_torch()
-
 class CauseSpanModel(nn.Module):
     def __init__(self):
         super(CauseSpanModel, self).__init__()
@@ -55,14 +53,10 @@ class CauseSpanModel(nn.Module):
             attention_mask=attention_mask
         )
         
-        # seq_out = torch.cat((out[-1], out[-2]), dim=-1)
         seq_out = outputs[0]
-        # seq_out = self.dropout(seq_out)
         logits = self.linear(seq_out)
         
-        ## split the logits into 2
-        ## (batch_size, num_tokens, 1) and (batch_size, num_tokens, 1)
-        
+    
         start_logits, end_logits = logits.split(1, dim=-1)
         
         start_logits = start_logits.squeeze(-1)
@@ -183,7 +177,6 @@ class CauseSpanPredictor:
             num_training_steps=num_train_steps
         )
     
-        # model = nn.DataParallel(model) # for multiple GPUs
         train_loss_list = []
         eval_loss_list = []
         best_eval_loss = 1e8
@@ -191,10 +184,8 @@ class CauseSpanPredictor:
         best_f1 = 0
 
         for epoch in range(self.model_args.epochs):
-            # print("..............Inside cause Epoch...............")
             train_loss_num = self.train_fn(train_data_loader, model, optimizer, device, scheduler)
             
-            # TODO: Look at what does squad use for evaluation
             all_predictions, all_nbest_json, scores_diff_json, eval_loss, eval_loss_num = self.eval_fn(valid_data_loader, examples, features, model, device)
             
             train_loss_list.append(train_loss_num)
@@ -213,13 +204,10 @@ class CauseSpanPredictor:
 
             if pos_f1 > best_f1:
                 save_path = 'cause_epoch_{}.pth'.format(epoch)
-                # save_path = 'cause_epoch.pt'
                 torch.save(self.model.state_dict(), os.path.join(self.path, save_path))
-                # best_eval_loss = eval_loss
                 best_f1 = pos_f1 
 
-        # plot_loss(train_loss_list, eval_loss_list, "CS")
-
+        
     def eval_fn(self, data_loader, examples, features, model, device):
         all_results = []
         eval_loss = 0.0
@@ -285,7 +273,6 @@ class CauseSpanPredictor:
         return all_predictions, all_nbest_json, scores_diff_json, eval_loss, eval_loss_list.avg
 
     def evaluate(self, data_loader, examples, features, eval_data, device):
-        # print('...........Inside evaluate function............')
         model = self.model
         model.load_state_dict(torch.load(self.path))
         model = model.to(device)

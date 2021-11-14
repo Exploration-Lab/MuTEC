@@ -63,11 +63,6 @@ class Dataset:
         s2_encode = self.encode(S2, None, False, 32, False, True)
         s3_encode = self.encode(S3, None, False, 32, False, True)
         
-        '''
-        self.print_encoded(s1_encode, self.tokenizer.tokenize(S1))
-        self.print_encoded(s2_encode, self.tokenizer.tokenize(S2))
-        self.print_encoded(s3_encode, self.tokenizer.tokenize(S3))
-        '''
 
         start_idx = None
         end_idx = None
@@ -110,22 +105,19 @@ class Dataset:
         emotion_idx = len(overall_input_ids)
 
         padding_len = self.max_len['max_qlen'] - len(overall_input_ids)
-        # print("Padding Length: ", padding_len)
-
+        
         if padding_len > 0:
             overall_input_ids = overall_input_ids + ( [0]*padding_len )
             overall_token_type_ids = overall_token_type_ids + ( [1]*padding_len )
             overall_attention_mask = overall_attention_mask + ( [0]*padding_len )
 
-        # print(overall_input_ids)
-
+        
         utterance_input_ids = [101] + utterance_encode['input_ids'] + [102] 
         utterance_mask = [1]*len(utterance_input_ids)
         utterance_token_type_ids=[0]*len(utterance_input_ids)
 
         padding_ulen = self.max_len['max_ulen'] - len(utterance_input_ids)
-        # print("padding ULength:", padding_ulen)
-
+        
         if padding_ulen > 0:
             utterance_input_ids = utterance_input_ids + ([0]*padding_ulen)
             utterance_mask = utterance_mask + ([0]*padding_ulen)
@@ -159,11 +151,7 @@ class Dataset:
                 end_idx = ind + len(cause_span)
                 break 
 
-        # print(context)
-        # print(cause_span)
-        # print(start_idx, end_idx)
-        # print()
-
+        
         # make the selected text characters as 1 and rest as 0
         char_targets = [0]*len(context)
 
@@ -172,19 +160,10 @@ class Dataset:
                 char_targets[ch] = 1
                 
 
-        # this section of code needs to be checked
-        
         # offset_mapping tell us the starting and end index of a token at character level
         # 1 to -1 because we need to skip [CLS] and [SEP]
         context_offset_mapping = context_encode.offset_mapping[1:-1]
 
-        # print(utterance)
-        print(context_offset_mapping)
-        print(char_targets)
-        print(self.tokenizer.tokenize(context))
-        print(len(self.tokenizer.tokenize(context)))
-        # print(context)
-        # print(cause_span)
         
         target_idx = []
         for j, (offset1, offset2) in enumerate(context_offset_mapping):
@@ -192,38 +171,10 @@ class Dataset:
             if sum(char_targets[offset1:offset2]) > 0:
                 target_idx.append(j)
         
-        print(cause_span) 
-        print(target_idx)
-
+        
         targets_start = target_idx[0]
         targets_end = target_idx[-1]
     
-        # print(target_idx)
-        # print(targets_start)
-        # print(targets_end)
-
-
-        # length = {
-        #     'input_ids': type(overall_input_ids),
-        #     'attention_mask': type(overall_attention_mask),
-        #     'token_type_ids': type(overall_token_type_ids),
-        #     'targets_start': type(targets_start),
-        #     'targets_end': type(targets_end),
-        #     'offset_start': 0,
-        #     'offset_end': 0,
-        #     'utterance_input_ids': len(utterance_input_ids),
-        #     'utterance_mask': len(utterance_mask),
-        #     'utterance_token_type_ids': len(utterance_token_type_ids),
-        # }
-        
-        # print(context)
-        # print("*"*50)
-        # print(cause_utterance)
-        # print("*"*50)
-        # print(utterance)
-        # print("*"*50)
-        # print(length)
-        # print()
 
         return {
             'input_ids': overall_input_ids,
@@ -274,9 +225,6 @@ class Dataset:
             'emotion_idx': (inputs['emotion_idx'])
         }
 
-        # print(length)
-        # print()
-
         return {
             'input_ids': torch.tensor(inputs['input_ids'], dtype=torch.long),
             'mask': torch.tensor(inputs['attention_mask'], dtype=torch.long),
@@ -300,7 +248,6 @@ if __name__ == '__main__':
     df_train.emotion = df_train.emotion.apply(lambda x: config.emotion_mapping[x])
     df_valid.emotion = df_valid.emotion.apply(lambda x: config.emotion_mapping[x])
 
-    # print(dfx_valid.head())
     
     train_dataset = Dataset(
         emotion = df_train.emotion.values,

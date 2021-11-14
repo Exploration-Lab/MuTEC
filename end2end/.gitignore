@@ -1,9 +1,0 @@
-__pycache__/
-.ipynb_checkpoints/
-wandb/
-word2vec/
-
-# files
-install.sh
-glove_emotion_weights.npy
-*.txt
