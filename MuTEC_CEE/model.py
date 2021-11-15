@@ -92,7 +92,7 @@ class ClsModel(nn.Module):
 
     def forward(self, input_ids=None, attention_mask=None, token_type_ids=None, ut_len=None, ui_len=None):
         s_out, pool_out = self.get_embeddings(input_ids, attention_mask, token_type_ids)
-        pool, ut, ui, c = s_out.split([1, ut_len[0], ui_len[0], s_out.size(1)-ut_len[0]-ui_len[0]-1], dim=1)
+        _ , ut, ui, c = s_out.split([1, ut_len[0], ui_len[0], s_out.size(1)-ut_len[0]-ui_len[0]-1], dim=1)
         
         ut_embed, _, e = self.get_emotion_embed(ut)
         e_logits = self.e_linear(e)

@@ -45,13 +45,6 @@ def run(device, model_args):
     model = RecModel(device, ep_best_model_path, cs_best_model_path, em_weights, model_args)
     model.train_fn(df_train, df_valid)
     
-    # print("Evaluate model on test set")
-    # ep_best_model_path = 'ep_models/emotion_epoch_0.pt'
-    # cs_best_model_path = 'cs_models/cause_epoch_0.pt'
-    # model = RecModel(device, ep_best_model_path, cs_best_model_path, em_weights, model_args)
-    # results, text = model.eval_fn(df_test)
-    # r, _ = evaluate_results(text)
-    # print(r)
     
   
 if __name__ == '__main__':
@@ -79,12 +72,12 @@ if __name__ == '__main__':
     }
 
     if config.WANDB:
-      wandb.init(project='two_step', 
-                entity='ashwani345',
+      wandb.init(project='...', 
+                entity='...',
                 config=model_args)
 
       model_args = wandb.config
-      os.environ["WANDB_API_KEY"] = "ebbd83c0708fcda75d8830954d38aec2241b7637"
+      os.environ["WANDB_API_KEY"] = "..."
     else:
       model_args = utils.dotdict(model_args)
 
