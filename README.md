@@ -9,3 +9,4 @@
 > Inside every directory you can find a `README` that explains the structure of that directory. 
 
 Dataset is taken from RECCON paper: https://github.com/declare-lab/RECCON
+MuTEC balanced dataset: https://drive.google.com/drive/folders/10Vn-RWEGODxaHd1vD9mKc26iB1qe-o48?usp=sharing
