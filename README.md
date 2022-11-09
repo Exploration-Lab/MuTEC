@@ -18,5 +18,5 @@ MuTEC balanced dataset: https://drive.google.com/drive/folders/10Vn-RWEGODxaHd1v
 
 The code follows [CC-BY-NC](CC-BY-NC) license. Thus, users can share and adapt the code if they give credit to us and do not use for any commercial purposes.
 
-## Arxiv Link 
+## Paper Link 
 https://arxiv.org/abs/2211.03742 
